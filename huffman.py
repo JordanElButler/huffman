@@ -1,4 +1,4 @@
-import heapq
+import heap
 
 def generate_frequency_table(msg):
   table = {}
@@ -11,18 +11,18 @@ def generate_frequency_table(msg):
   return table
 
 def create_huffman(freq_table):
-  pq = []
+  pq = heap.Heap()
   for key, value in freq_table.items():
-    heapq.heappush(pq, (value, key, None, None))
+    pq.insert( (value, key, None, None))
 
-  while len(pq) > 1:
-    item1 = heapq.heappop(pq)
-    item2 = heapq.heappop(pq)
+  while pq.get_size() > 1:
+    item1 = pq.remove_min()
+    item2 = pq.remove_min()
     new_value = item1[0] + item2[0]
     new_item = (new_value, '', item1, item2)
-    heapq.heappush(pq, new_item)
+    pq.insert(new_item)
 
-  huffman_tree = heapq.heappop(pq)
+  huffman_tree = pq.remove_min()
   # traverse tree and build two dicts
   encoding = {} # symbol to num
   decoding = {} # num to symbol
